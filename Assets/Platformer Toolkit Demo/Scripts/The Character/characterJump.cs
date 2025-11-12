@@ -108,6 +108,13 @@ namespace GMTK.PlatformerToolkit {
         private void FixedUpdate() {
             //Get velocity from Kit's Rigidbody 
             velocity = body.linearVelocity;
+            
+            // 슈퍼점프 방지: 비정상적으로 높은 Y 속도 제한
+            float maxUpwardVelocity = jumpSpeed * 1.3f; // 정상 점프의 130%까지만 허용
+            if (velocity.y > maxUpwardVelocity && !onGround) {
+                velocity.y = maxUpwardVelocity;
+                body.linearVelocity = velocity;
+            }
 
             //Keep trying to do a jump, for as long as desiredJump is true
             if (desiredJump) {
@@ -202,6 +209,13 @@ namespace GMTK.PlatformerToolkit {
 
                 //Apply the new jumpSpeed to the velocity. It will be sent to the Rigidbody in FixedUpdate;
                 velocity.y += jumpSpeed;
+                
+                // 슈퍼점프 방지: Y 속도를 최대 점프 속도로 제한
+                float maxJumpVelocity = jumpSpeed * 1.2f; // 정상 점프 속도의 120%까지만 허용
+                if (velocity.y > maxJumpVelocity) {
+                    velocity.y = maxJumpVelocity;
+                }
+                
                 currentlyJumping = true;
 
                 if (juice != null) {

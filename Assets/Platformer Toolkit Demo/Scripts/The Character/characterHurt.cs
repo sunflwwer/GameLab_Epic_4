@@ -32,6 +32,12 @@ namespace GMTK.PlatformerToolkit {
 
         void Start() {
             body = GetComponent<Rigidbody2D>();
+            
+            // 체크포인트가 설정되지 않았으면 현재 위치를 초기 체크포인트로 설정
+            if (checkpointFlag == Vector3.zero) {
+                checkpointFlag = transform.position;
+                Debug.Log($"✅ 초기 체크포인트 설정: {checkpointFlag}");
+            }
         }
 
         public void newCheckpoint(Vector3 flagPos) {
